@@ -1,0 +1,44 @@
+:root {
+	--entity-walk: 5deg;
+}
+
+body {
+	margin: 0;
+	display: grid;
+	grid-template-areas: 'a';
+}
+
+.entities,
+.ui {
+	width: 100vw;
+	height: 100vh;
+	grid-area: a;
+}
+
+.entities {
+	display: grid;
+	grid-template-areas: 'a';
+}
+
+.entity {
+	grid-area: a;
+	animation: Walking 1s infinite forwards;
+}
+
+@keyframes Walking {
+	0% {
+		rotate: calc(var(--entity-walk) * -1);
+	}
+	25% {
+		rotate: var(--entity-walk);
+	}
+	50% {
+		rotate: var(--entity-walk);
+	}
+	75% {
+		rotate: calc(var(--entity-walk) * -1);
+	}
+	100% {
+		rotate: calc(var(--entity-walk) * -1);
+	}
+}
