@@ -17,6 +17,9 @@ body,
 	width: 100vw;
 	height: 100vh;
 }
+.map {
+	transform-origin: top left;
+}
 .ui {
 	position: relative;
 }
@@ -46,15 +49,4 @@ body,
 	background-color: #000a;
 	cursor: pointer;
 	padding: 2px 10px;
-}
-
-.centre {
-	--s: 5px;
-	position: absolute;
-	top: calc(50vh - var(--s) / 2);
-	left: calc(50vw - var(--s) / 2);
-	width: var(--s);
-	height: var(--s);
-	border-radius: 50%;
-	background-color: red;
 }

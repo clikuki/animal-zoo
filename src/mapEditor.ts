@@ -1,4 +1,5 @@
 import { BackgroundPiece } from './backgroundPiece.js';
+import { Vec } from './vec.js';
 
 // Editor to make setting up maps easier
 // Also to test stuff out
@@ -62,35 +63,19 @@ imgList.forEach((info) => {
 	imgBtnList.appendChild(btn);
 });
 
-{
-	const info = imgList[0];
-	const piece: BackgroundPiece = {
-		x: innerWidth / 2 - info.w / 2,
-		y: innerHeight / 2 - info.h / 2,
-		w: info.w,
-		h: info.h,
-		src: info.src,
-		bridges: [],
-	};
-
-	const img = document.createElement('img');
-	img.src = `assets/${info.src}`;
-	img.width = info.w;
-	img.height = info.h;
-	img.style.translate = `${piece.x}px ${piece.y}px`;
-
-	pcToImgMap.set(piece, img);
-	imgToPcMap.set(img, piece);
-	mapContainer.appendChild(img);
-}
-
 const mouse = {
+	isDown: false,
 	x: 0,
 	y: 0,
 };
 document.addEventListener('mousemove', (e) => {
 	mouse.x = e.x;
 	mouse.y = e.y;
+
+	if (mouse.isDown) {
+		view.pos = Vec.add(view.pos, { x: e.movementX, y: e.movementY });
+		mapContainer.style.translate = `${view.pos.x}px ${view.pos.y}px`;
+	}
 
 	if (!pieceToAdd) return;
 
@@ -101,38 +86,32 @@ document.addEventListener('mousemove', (e) => {
 	}px`;
 });
 
-// Representing scale by 100 to avoid decimal errors
-const scaleFull = 50;
+document.addEventListener('mousedown', () => (mouse.isDown = true));
+document.addEventListener('mouseup', () => (mouse.isDown = false));
+
+// Representing scale by larger integers to avoid decimal errors
+const fullScale = 50;
 const view = {
-	scale: scaleFull,
-	x: 0,
-	y: 0,
+	scale: fullScale,
+	pos: {
+		x: 0,
+		y: 0,
+	},
 };
 document.addEventListener('wheel', (e) => {
 	if (Math.abs(e.deltaY) > 1) {
-		// Change scale
-		const oldScale = view.scale / scaleFull;
+		// Don't change scale when it goes beyond limits
 		const newScale = view.scale + Math.sign(e.deltaY);
-		if (newScale < scaleFull * 0.1 || newScale > scaleFull * 2) return;
-
-		view.scale = newScale;
-		worldContainer.style.scale = String(view.scale / scaleFull);
+		if (newScale < fullScale * 0.1 || newScale > fullScale * 2) return;
 
 		// Move towards mouse
-		// const pos = [
-		// 	(mouse.x - innerWidth / 2) * oldScale,
-		// 	(mouse.y - innerHeight / 2) * oldScale,
-		// ];
-		// const new_pos = pos.map((n) => n * (view.scale / scaleFull));
-		// view.x -= new_pos[0] - pos[0];
-		// view.y -= new_pos[1] - pos[1];
-		// mapContainer.style.translate = `${view.x}px ${view.y}px`;
-		// // console.log([0, 1].map((i) => new_pos[i] - pos[i]));
-		// console.table({
-		// 	old: pos,
-		// 	new: new_pos,
-		// 	change: [0, 1].map((i) => new_pos[i] - pos[i]),
-		// });
+		const ratio = 1 - newScale / view.scale;
+		view.pos = Vec.add(Vec.mult(Vec.sub(mouse, view.pos), ratio), view.pos);
+		mapContainer.style.translate = `${view.pos.x}px ${view.pos.y}px`;
+
+		// Update scale
+		view.scale = newScale;
+		mapContainer.style.scale = String(view.scale / fullScale);
 	}
 });
 
@@ -142,8 +121,8 @@ document.addEventListener('keydown', (e) => {
 	// Check if it collides with any existing piece first
 
 	// Add piece to map
-	pieceToAdd.x = (mouse.x - pieceToAdd.w / 2 + view.x) * view.scale;
-	pieceToAdd.y = (mouse.y - pieceToAdd.h / 2 + view.y) * view.scale;
+	pieceToAdd.x = (mouse.x - pieceToAdd.w / 2 + view.pos.x) * view.scale;
+	pieceToAdd.y = (mouse.y - pieceToAdd.h / 2 + view.pos.y) * view.scale;
 	const img = pcToImgMap.get(pieceToAdd)!;
 	mapContainer.appendChild(img);
 
@@ -156,10 +135,3 @@ document.addEventListener('mouseover', (e) => {
 	mouse.x = e.x;
 	mouse.y = e.y;
 });
-
-const centre1 = document.createElement('div');
-const centre2 = document.createElement('div');
-centre2.className = centre1.className = 'centre';
-centre2.style.backgroundColor = 'blue';
-document.body.append(centre1);
-mapContainer.append(centre2);
