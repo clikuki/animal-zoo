@@ -5,23 +5,28 @@
 body {
 	margin: 0;
 	display: grid;
-	grid-template-areas: 'a';
+	background-color: black;
 }
 
-.entities,
+.stacked {
+	display: grid;
+	grid-template-areas: 'a';
+}
+.stacked > * {
+	grid-area: a;
+}
+
+.world,
 .ui {
 	width: 100vw;
 	height: 100vh;
-	grid-area: a;
 }
 
 .entities {
 	display: grid;
-	grid-template-areas: 'a';
 }
 
 .entity {
-	grid-area: a;
 	animation: Walking 1s infinite forwards;
 }
 

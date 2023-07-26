@@ -160,7 +160,13 @@ class Animal {
 	}
 }
 
-const entityContainerElem = document.querySelector(
+const worldContainer = document.querySelector('.world') as HTMLDivElement;
+
+const backgroundContainer = worldContainer.querySelector(
+	'.background',
+) as HTMLDivElement;
+
+const entityContainerElem = worldContainer.querySelector(
 	'.entities',
 ) as HTMLDivElement;
 const catScale = 0.1;
@@ -176,11 +182,11 @@ const animals: Animal[] = [];
 			Math.random() * (innerHeight - h) + h / 2,
 			w,
 			h,
-			'testCat.jpg',
+			'assets/testCat.jpg',
 		);
 		entityContainerElem.appendChild(animal.sprite);
 		animals.push(animal);
-		if (animals.length >= 10) clearInterval(id);
+		if (animals.length >= 3) clearInterval(id);
 	}, 500);
 })();
 

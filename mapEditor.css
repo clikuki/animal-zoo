@@ -1,0 +1,60 @@
+body {
+	margin: 0;
+	background-color: black;
+	overflow: hidden;
+}
+
+body,
+.world,
+.map {
+	display: grid;
+	grid-template-areas: 'a';
+}
+:is(body, .world, .map) > * {
+	grid-area: a;
+}
+:is(.map, .ui, .piece-holder) {
+	width: 100vw;
+	height: 100vh;
+}
+.ui {
+	position: relative;
+}
+.ui > * {
+	position: absolute;
+}
+
+.piece-holder {
+	pointer-events: none;
+	opacity: 0.7;
+}
+.piece-holder.invalid > img {
+	outline: 0.5rem dashed red;
+}
+
+.img-selection {
+	display: flex;
+	flex-direction: column;
+	width: fit-content;
+	top: 10px;
+	right: 10px;
+}
+.img-selection > button {
+	border-radius: 0;
+	color: white;
+	border: 3px solid white;
+	background-color: #000a;
+	cursor: pointer;
+	padding: 2px 10px;
+}
+
+.centre {
+	--s: 5px;
+	position: absolute;
+	top: calc(50vh - var(--s) / 2);
+	left: calc(50vw - var(--s) / 2);
+	width: var(--s);
+	height: var(--s);
+	border-radius: 50%;
+	background-color: red;
+}
