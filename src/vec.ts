@@ -43,4 +43,23 @@ export class Vec {
 	static setMag(a: Vec, s: number): Vec {
 		return this.mult(this.normalize(a), s);
 	}
+
+	static floor(a: Vec): Vec {
+		return {
+			x: Math.floor(a.x),
+			y: Math.floor(a.y),
+		};
+	}
+	static ceil(a: Vec): Vec {
+		return {
+			x: Math.ceil(a.x),
+			y: Math.ceil(a.y),
+		};
+	}
+	static round(a: Vec): Vec {
+		return {
+			x: Math.round(a.x),
+			y: Math.round(a.y),
+		};
+	}
 }

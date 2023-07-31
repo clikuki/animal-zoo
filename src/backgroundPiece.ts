@@ -1,4 +1,4 @@
-interface Rectangle {
+export interface Rectangle {
 	w: number;
 	h: number;
 	x: number;

@@ -13,7 +13,7 @@ body,
 :is(body, .world, .map) > * {
 	grid-area: a;
 }
-:is(.map, .ui, .piece-holder) {
+:is(.map, .ui) {
 	width: 100vw;
 	height: 100vh;
 }
@@ -33,10 +33,12 @@ body,
 
 .piece-holder {
 	pointer-events: none;
-	opacity: 0.7;
+}
+.piece-holder.invalid {
+	background-color: hsl(350, 100%, 50%);
 }
 .piece-holder.invalid > img {
-	outline: 0.5rem dashed red;
+	opacity: 0.7;
 }
 
 .img-selection {
